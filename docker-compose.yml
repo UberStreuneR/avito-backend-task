@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: dev
+    volumes:
+      - ./:/opt/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    container_name: pgdb
+    env_file:
+      - ./app.env
+    # volumes:
+      # - pgdata:/data/postgres
+      # - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "avito"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+volumes:
+  pgdata:
