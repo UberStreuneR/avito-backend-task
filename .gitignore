@@ -1,5 +1,6 @@
 /tmp
 todo.txt
 tests/trivial
+static/*.*
 
 # .env

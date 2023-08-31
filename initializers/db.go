@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var DB *gorm.DB
@@ -27,7 +28,7 @@ func ConnectDB(config *Config) {
 		log.Fatal("Failed to connect to the database \n", err.Error())
 		os.Exit(1)
 	}
-	err = DB.AutoMigrate(&entity.User{}, &entity.Segment{})
+	err = DB.AutoMigrate(&entity.User{}, &entity.Segment{}, &entity.SegmentLog{})
 	if err != nil {
 		log.Fatal("Migration failed \n", err.Error())
 		os.Exit(1)
@@ -44,12 +45,14 @@ func GetTestDB(config *Config) *gorm.DB {
 		os.Exit(1)
 	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", config.TestDBHost, config.DBUserName, config.DBUserPassword, config.TestDBName, config.TestDBPort)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		log.Fatal("Failed to connect to the database \n", err.Error())
 		os.Exit(1)
 	}
-	err = db.AutoMigrate(&entity.User{}, &entity.Segment{})
+	err = db.AutoMigrate(&entity.User{}, &entity.Segment{}, &entity.SegmentLog{})
 	if err != nil {
 		log.Fatal("Migration failed \n", err.Error())
 		os.Exit(1)

@@ -43,3 +43,9 @@ type AddAndRemoveSegmentsSchema struct {
 	AddSegments    []string `form:"add_segment_names" json:"add_segment_names" validate:"required"`
 	RemoveSegments []string `form:"remove_segment_names" json:"remove_segment_names" validate:"required"`
 }
+
+type SegmentLogRequestSchema struct {
+	UserID     uint   `form:"user_id" json:"user_id" validate: "required"`
+	DateAfter  string `json:"date_after" validate:"required"`
+	DateBefore string `json:"date_before" validate:"required"`
+}

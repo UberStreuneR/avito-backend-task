@@ -16,8 +16,10 @@ func init() {
 		log.Fatalln("Failed to load environment variables\n", err.Error())
 	}
 	initializers.ConnectDB(&config)
-	services.Segments = services.CreateSegmentService(initializers.DB)
-	services.Users = services.CreateUserService(initializers.DB)
+	db := initializers.DB
+	services.Segments = services.CreateSegmentService(db)
+	services.Users = services.CreateUserService(db)
+	services.SegmentLogs = services.CreateSegmentLogService(db)
 }
 
 func main() {
@@ -28,6 +30,9 @@ func main() {
 			"message": "Everything is fine.",
 		})
 	})
+
+	app.Static("/static", "./static")
+
 	users := app.Group("/api/users")
 	users.Post("/", controllers.AddUserHandler)
 	users.Get("/", controllers.GetUsersHandler)
@@ -43,6 +48,9 @@ func main() {
 	segments.Patch("/add_user", controllers.AddSegmentsToUserHandler)
 	segments.Patch("/remove_user", controllers.RemoveUserFromSegment)
 	segments.Patch("/add_and_remove", controllers.AddAndRemoveSegmentsHandler)
+
+	segmentLogs := app.Group("/api/segment_logs")
+	segmentLogs.Get("/", controllers.GetSegmentLogsHandler)
 
 	log.Fatal(app.Listen(":8000"))
 }

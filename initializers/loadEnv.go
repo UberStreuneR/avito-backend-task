@@ -8,6 +8,7 @@ type Config struct {
 	DBUserPassword string `mapstructure:"POSTGRES_PASSWORD"`
 	DBName         string `mapstructure:"POSTGRES_DB"`
 	DBPort         string `mapstructure:"POSTGRES_PORT"`
+	StaticPath     string `mapstructure:"STATIC_PATH"`
 	TestDBHost     string `mapstructure:"TEST_POSTGRES_HOST"`
 	TestDBPort     string `mapstructure:"TEST_POSTGRES_PORT"`
 	TestDBName     string `mapstructure:"TEST_POSTGRES_DB"`

@@ -111,6 +111,12 @@ func (s SegmentService) AddSegmentsToUser(id uint, strSegments []string) error {
 	user.Segments = append(user.Segments, segments...)
 	result = s.DB.Save(user)
 	s.DB.Save(user.Segments)
+	sl := CreateSegmentLogService(s.DB)
+	if result.Error == nil {
+		for _, seg := range segments {
+			sl.AddOne(id, seg.Name, "added")
+		}
+	}
 	return result.Error
 }
 
@@ -128,9 +134,11 @@ func (s SegmentService) RemoveSegmentsFromUser(id uint, strSegments []string) er
 	if err != nil {
 		return err
 	}
+	sl := CreateSegmentLogService(s.DB)
 	for _, seg := range segments {
 		if segmentHash[seg.Name] {
 			s.DB.Model(user).Association("Segments").Delete(seg)
+			sl.AddOne(id, seg.Name, "deleted")
 		}
 	}
 	return nil
@@ -150,5 +158,9 @@ func (s SegmentService) RemoveUserFromSegment(id uint, segmentName string) error
 		return nil
 	}
 	err = s.DB.Model(user).Association("Segments").Delete(segment)
+	sl := CreateSegmentLogService(s.DB)
+	if err == nil {
+		sl.AddOne(id, segmentName, "deleted")
+	}
 	return err
 }

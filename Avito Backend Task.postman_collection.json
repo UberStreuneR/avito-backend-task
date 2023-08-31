@@ -253,6 +253,19 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Segment Logs",
+			"item": [
+				{
+					"name": "Get Segment Logs",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
