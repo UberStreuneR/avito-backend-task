@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// var Segments = SegmentService{initializers.DB}
 var Segments SegmentService
 
 type SegmentService struct {
@@ -79,7 +78,6 @@ func (s SegmentService) UpdateOne(name, newName string) (*entity.Segment, error)
 		return nil, err
 	}
 	segment.Name = newName
-	// result := s.DB.Save(segment)
 	result := s.DB.Model(&segment).Where("name = ?", name).Update("name", newName)
 	if result.Error != nil {
 		return nil, result.Error

@@ -33,9 +33,6 @@ func (u UserService) GetOne(id uint) (*entity.User, error) {
 	if result.Error != nil {
 		return user, result.Error
 	}
-	// if user.Segments == nil {
-	// 	user.Segments = []*entity.Segment{}
-	// }
 	return user, nil
 }
 

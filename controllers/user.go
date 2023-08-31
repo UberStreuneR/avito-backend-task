@@ -45,7 +45,6 @@ func GetUsersHandler(c *fiber.Ctx) error {
 }
 
 func GetUserHandler(c *fiber.Ctx) error {
-	// id := c.Params("id")
 	var payload entity.UserCreateSchema
 	if err := c.ParamsParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})

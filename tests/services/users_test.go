@@ -14,8 +14,6 @@ type UserServiceTestSuite struct {
 	u services.UserService
 }
 
-var count int
-
 func (suite *UserServiceTestSuite) TestAddUser() {
 	user, err := suite.u.AddOne(1000)
 	suite.Equal(err, nil)
@@ -48,5 +46,4 @@ func TestUserService(t *testing.T) {
 	}
 	db := initializers.GetTestDB(&config)
 	suite.Run(t, &UserServiceTestSuite{u: services.CreateUserService(db)})
-	log.Println(count)
 }
